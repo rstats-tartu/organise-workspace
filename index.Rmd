@@ -1,0 +1,23 @@
+---
+title: "Data analysis and statistical inference"
+author: "Taavi Päll"
+date: "28 5 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data analysis in R, R studio and Excel 
+(statistical models and analysing of the results, choosing the right program). 
+
+- Data organization in spreadsheets https://peerj.com/preprints/3183/
+
+## Planning of the experiment taking into account data analysis (number of parallels)
+
+## Research questions
+
+## Choosing the most suitable regression model for analysis. 
+
+## EC50 calculations (effect concentratiosn etc)
