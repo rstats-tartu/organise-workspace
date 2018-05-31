@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quick intro to statistics</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Taavi Päll, Ülo Maiväli" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Quick intro to statistics
+### Taavi Päll, Ülo Maiväli
+### 2018-JUN-05 (updated: 2018-05-31)
+
+---
+
+
+
+
+class: inverse, center, middle
+
+# What is statistics
+
+---
+
+## Questions that statistics asks
+
+- How your data looks like, what shape it has, and what are the parameter values describing your distribution (mean, median, variation, covariation)
+
+- What should we believe, based on our sample, about the real parameter value in the whole population? For example, when in our sample mean height is 178 cm, then what is the probability that real mean height of the population is &gt; 185 cm?
+
+- Does the structure of our statistical model support our scientific hypothesis? For example, when covariance of weight and height can be described by linear regression model, then we can prefer scientific hypothesis that provides mechanism for such relationship
+
+- What and how well our model predicts the future? For example, can our model reasonably well predict outcome using unseen data?
+
+???
+
+- For example, covariation of measured weight and height can be measured with help of correlation coeficient.
+
+---
+
+## Statistics answers scientific questions indirectly
+
+- Main function of statistics is to quantitate the uncertainty when we seek answers to above questions (p-values, posterior distribution of effect size)
+
+- Statistics never answers scientific questions or questions about the state of real world directly, it's more like what is the probability of data given that null hypothesis is true
+
+- Answers that statistics provides remain always confined to our data and models, this puts emphasis on representative sampling
+
+- Therefore one should always prefer well collected, rich data and flexible models in order to keep divergency between model coeficients and real world as small as possible (better data means better models)
+
+- Statistical inferences are always uncertain
+
+---
+
+## Branches of statistics
+
+Statistics can be divided into three broad categories: descriptive, exploratory, and inferential:
+
+1. Descriptive statistics includes summary statistics that are used to summarise a set of observations, in order to communicate the largest amount of information as simply as possible 
+
+1. Exploratory stats creates new hypotheses based on your data and uses iterative visualisation and modeling 
+
+1. Inferential stats consists formal framework to test proposed hypotheses
+
+---
+class: inverse, center, middle
+
+# Descriptive stats
+
+---
+
+## Summary stats characterise your sample
+
+- Typical observation of the sample (mean, median, mode)
+
+- Variance of observations (standard deviation, MAD),
+
+- Covariance of variables (correlation coeficient)
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-1-1.png" style="display: block; margin: auto;" /&gt;
+
+Which of these summary statistics represents best your intuition about central tendency of this distribution?
+
+???
+
+- Kui valim on normaaljaotusega (histogramm on sümmeetriline), hinda tüüpilist liiget läbi aritmeetilise keskmise (mean).
+
+Muidu kasuta mediaani (median). Kui valim on liiga väike, et jaotust hinnata (aga &gt; 4), eelista mediaani. Mediaani saamiseks järjestatakse mõõdetud väärtused suuruse järgi ja võetakse selle rea keskmine liige. Mediaan on vähem tundlik ekstreemsete väärtuste (outlierite) suhtes kui mean.
+
+Valimi kõige levinumat esindajat iseloomustab mood ehk jaotuse tipp. Seda on aga raskem täpselt määrata ja mitmetipulisel jaotusel on mitu moodi. Töötamisel posterioorsete jaotustega on mood sageli parim lahendus.
+
+---
+
+## Skim your dataset
+
+Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
+&lt;img src="img/skim.png" style="display: block; margin: auto;" /&gt;
+ 
+---
+
+## Skim your dataset
+
+Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
+&lt;img src="img/skim-rect.png" style="display: block; margin: auto;" /&gt;
+ 
+---
+
+## Variance of random variables
+
+- Arithmetic mean is accompanied with standard deviation (SD). SD has same dimension as your data and mean. 
+
+- Preferred format for displaying mean and SD in text is: "**mean (SD)**" (not "mean ( `\(\pm\)` SD)") 
+
+- 1 SD covers 68% normal distribution, 2 SD -- 96% and 3 SD -- 99%. Normal distribution has "thin" tails and for example only 1 out of 1 million data points is 5 SD away from mean 
+
+---
+
+## Example: human IQ
+
+- Human IQ is normally distributed with mean = 100 and sd = 15. 
+- When your IQ is 115 (mean IQ of students admitting university is 1 SD away from population mean), then the probability that random person you encounter on the street has higher IQ than you is 16% ((100% - 68%) / 2 = 16%).
+
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## When your distribution is not that "normal"
+
+- When your real life distribution has long or "fat" tails or has outliers then formula for calculating SD for normal distribution `\(s = \sqrt{\frac{\sum_{i=1}^N (x_i- \bar x)^2} {N - 1}}\)` will overestimate SD and sample variance  
+
+- When your data can only have positive values, then SD &gt; mean / 2 suggests that your data is not compatible with the normal model 
+
+- Simplest way to fix this situation when you ave only positive values in your dataset is **log transformation**
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+???
+
+- normal model predicts negative values with relatively high frequency
+- igale jaotusele, mida me oskame integreerida, saab ka integraali abil õige katvusega standardhälbe arvutada. 
+- Seega tasub meeles pidada, et tavapärane viis standardhälbe arvutamiseks sd() abil kehtib normaaljaotuse mudeli piirides ja ei kusagil mujal! 
+- Siiski, kui arvutada standardhälbe sd()-ga, võib olla kindel, jaotusest sõltumata hõlvavad 2 SD-d vähemalt 75% andmejaotusest. 
+- Kui andmed ei sobi normaaljaotusesse ja te ei ole rahul tulemusega, mille tõlgendus on nii ebakindel kui 75 protsenti kuni 96+ protsenti, võib pakkuda kahte alternatiivset lahendust:
+
+---
+
+## Mean and SD from log transformed data
+
+- Calculate mean and SD using log-transformed data and then convert them back to linear scale with anti-log (for example, when `\(log_2(10) = 3.32\)`, then anti-log is `\(2^{3.32} = 10\)`). 
+
+- In this case, geometric mean and multiplicative SD is presented in the original scale:
+    - multiplicative SD = geometric mean x SD; geometric mean / SD
+
+- Geometric mean is alway smaller than arthmetic mean 
+
+- SD interval is now assymetric and SD is always &gt; 0
+
+- This procedure ensures that ~68% of log normal data will remain in 1 SD range and 96% data will remain into 2 SD range
+
+---
+
+
+```r
+# calculate mean and sd using log-trans data
+dsum &lt;- filter(d, key == "log-transformed") %&gt;% 
+  summarise_at("value", c("mean", "sd"))
+# convert calculated mean and sd back to original scale using exp
+(bounds &lt;- transmute_at(dsum, c("mean", "sd"), exp) %&gt;% 
+  transmute(lower_1 = mean / sd, upper_1 = mean * sd,
+            lower_2 = mean / (2 * sd), upper_2 = mean * (2 * sd)))
+```
+
+```
+## # A tibble: 1 x 4
+##   lower_1 upper_1 lower_2 upper_2
+##     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1   0.390    2.58   0.195    5.17
+```
+
+```r
+# test calculated sd boundaries on the original data
+filter(d, key == "log-normal") %&gt;% 
+  group_by(key) %&gt;% 
+  summarise(fraction_data_1SD = sum(value &gt; bounds$lower_1 &amp; value &lt; bounds$upper_1) / 1000,
+            fraction_data_2SD = sum(value &gt; bounds$lower_2 &amp; value &lt; bounds$upper_2) / 1000)
+```
+
+```
+## # A tibble: 1 x 3
+##   key        fraction_data_1SD fraction_data_2SD
+##   &lt;chr&gt;                  &lt;dbl&gt;             &lt;dbl&gt;
+## 1 log-normal             0.673             0.923
+```
+
+.footnote[Code can be found at ]
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
