@@ -165,10 +165,8 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 - In this case, geometric mean and **geometric/multiplicative SD** is presented in the original scale:
     - multiplicative SD = geometric mean x SD; geometric mean / SD
     - however, geometric SD itself is multiplicative factor and therefore dimensionless
-
-- Geometric mean is always smaller than arthmetic mean 
-
-- SD interval is now assymetric and SD is always &gt; 0
+  - Geometric mean is always smaller than arthmetic mean 
+  - SD interval is now assymetric and SD is always &gt; 0
 
 - This procedure ensures that ~68% of log normal data will remain in 1 SD range and ~96% data will remain into 2 SD range
 
@@ -272,23 +270,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

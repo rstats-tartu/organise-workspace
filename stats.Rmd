@@ -208,10 +208,8 @@ ggplot(data = original) +
 - In this case, geometric mean and **geometric/multiplicative SD** is presented in the original scale:
     - multiplicative SD = geometric mean x SD; geometric mean / SD
     - however, geometric SD itself is multiplicative factor and therefore dimensionless
-
-- Geometric mean is always smaller than arthmetic mean 
-
-- SD interval is now assymetric and SD is always > 0
+  - Geometric mean is always smaller than arthmetic mean 
+  - SD interval is now assymetric and SD is always > 0
 
 - This procedure ensures that ~68% of log normal data will remain in 1 SD range and ~96% data will remain into 2 SD range
 
