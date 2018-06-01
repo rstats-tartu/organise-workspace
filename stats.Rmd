@@ -398,4 +398,6 @@ response time, temperature, height, weight, counts | placing in a race, ratings 
 - These three measurements represent metric, ordinal, and nominal scales, respectively
 
 
+- siit edasi lineaarne regressioon ja tavalisemad testid, lähtuvalt skaalast
+- katse planeerimine ja statistiline jõud
 
