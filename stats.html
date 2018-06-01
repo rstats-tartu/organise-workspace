@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # Quick intro to statistics
 ### Taavi Päll, Ülo Maiväli
-### 2018-JUN-05 (updated: 2018-05-31)
+### 2018-JUN-05 (updated: 2018-06-01)
 
 ---
 
@@ -220,19 +220,30 @@ filter(d, key == "log-normal") %&gt;%
 ## 1             0.673             0.923
 ```
 
-
-
-
 .footnote[Code can be found at [rstats-tln/fmtdk-course/master/stats.Rmd](https://raw.githubusercontent.com/rstats-tln/fmtdk-course/master/stats.Rmd?token=AEl8JvIQ0g8KRAUmbaAytLfPJVFc8OTdks5bGTe0wA%3D%3D) file]
 
+---
+
+## Testing assumption of normality
+
+- Certain tests, such as the t-test, require a normal distribution and therefore you might feel that you need to determine empirically whether your data has normal distribution
+
+- However, before you start with various normality tests, keep in mind that when your sample is not normal it does not mean automatically that the undelying population is also non-normal
+
+- There are several statistical tests for distributions, let's start with visual test - Q-Q plot
 
 ---
 
 ## Q-Q plot to compare data to theoretical distribution
-Q-Q plot allows visual evaluation of your variable against theoretical quantiles of a comparison distribution, e.g. normal distribution. Let's compare the body mass index (BMI) of Starwars characters to normal distribution.. it's quite normal.. except
+
+Q-Q plot allows visual evaluation of your variable against theoretical quantiles of a comparison distribution, e.g. normal distribution. R has at least two function to draw a Q-Q plot `qqplot` from **stats** package and `qqPlot` from **car** package. 
+
+Let's compare the body mass index (BMI) of Starwars characters to normal distribution
+
 &lt;img src="stats_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
 
-- Seems like Jabba Desilijic Tiure is way off the line
+- Seems like Jabba Desilijic Tiure is way off the line (15)
+- You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc)
 
 ---
 
@@ -261,12 +272,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

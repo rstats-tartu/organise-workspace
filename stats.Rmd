@@ -253,16 +253,26 @@ filter(d, key == "log-normal") %>%
             fraction_data_2SD = sum(value > bounds$lower_2sd & value < bounds$upper_2sd) / 1000)
 ```
 
-
-
-
 .footnote[Code can be found at [rstats-tln/fmtdk-course/master/stats.Rmd](https://raw.githubusercontent.com/rstats-tln/fmtdk-course/master/stats.Rmd?token=AEl8JvIQ0g8KRAUmbaAytLfPJVFc8OTdks5bGTe0wA%3D%3D) file]
 
+---
+
+## Testing assumption of normality
+
+- Certain tests, such as the t-test, require a normal distribution and therefore you might feel that you need to determine empirically whether your data has normal distribution
+
+- However, before you start with various normality tests, keep in mind that when your sample is not normal it does not mean automatically that the undelying population is also non-normal
+
+- There are several statistical tests for distributions, let's start with visual test - Q-Q plot
 
 ---
 
 ## Q-Q plot to compare data to theoretical distribution
-Q-Q plot allows visual evaluation of your variable against theoretical quantiles of a comparison distribution, e.g. normal distribution. Let's compare the body mass index (BMI) of Starwars characters to normal distribution.. it's quite normal.. except
+
+Q-Q plot allows visual evaluation of your variable against theoretical quantiles of a comparison distribution, e.g. normal distribution. R has at least two function to draw a Q-Q plot `qqplot` from **stats** package and `qqPlot` from **car** package. 
+
+Let's compare the body mass index (BMI) of Starwars characters to normal distribution
+
 ```{r, fig.height=3.5}
 library(car)
 sw <- filter(starwars, !is.na(height), !is.na(mass)) %>% 
@@ -270,7 +280,8 @@ sw <- filter(starwars, !is.na(height), !is.na(mass)) %>%
 o <- qqPlot(sw$BMI, ylab = "Starwars character BMI")
 ```
 
-- Seems like `r glue::glue('{paste(sw$name[o[1]], collapse = " and ")} is way off the line')`
+- Seems like `r sw$name[o[1]]` is way off the line (15)
+- You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc)
 
 ---
 

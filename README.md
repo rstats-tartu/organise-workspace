@@ -7,7 +7,7 @@ Lecturer: Taavi Päll, PhD
 
 Outline of the seminar:      
 - 9:45 REGISTRATION, COFFEE      
-- 10:00-12:30 Data analysis in R,  R studio and Excel (statistical models and analysing of the results, choosing the right program). 
+- 10:00-12:30 Data analysis in R, R studio and Excel (statistical models and analysing of the results, choosing the right program). 
 	Planning of the experiment taking into account data analysis (number of parallels).
 	Research questions.
 Choosing the most suitable regression model for analysis. 
