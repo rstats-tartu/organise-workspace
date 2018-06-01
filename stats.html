@@ -226,9 +226,27 @@ filter(d, key == "log-normal") %&gt;%
 
 - Certain tests, such as the t-test, require a normal distribution and therefore you might feel that you need to determine empirically whether your data has normal distribution
 
-- However, before you start with various normality tests, keep in mind that when your sample is not normal it does not mean automatically that the undelying population is also non-normal
+- Before you start with various normality tests, keep in mind that when your sample is not normal it does not mean automatically that the undelying population is also non-normal
 
-- There are several statistical tests for distributions, let's start with visual test - Q-Q plot
+- However, you would expect your sample to have the same distribution as the population. If it isn't, either your sample is very small or something went wrong somewhere
+
+- **Misconception: If your statistical analysis requires normality, it is a good idea to use a preliminary hypothesis test to screen for departures from normality**
+
+.footnote[
+[Do statistical tests require a normal distribution in the sample or in the population?](https://stats.stackexchange.com/q/289092/72998)
+]
+
+???
+
+- Shapiro’s test, Anderson Darling, and others are null hypothesis tests against the the assumption of normality. 
+- These should not be used to determine whether to use normal theory statistical procedures. 
+- In fact they are of virtually no value to the data analyst. 
+- Under what conditions are we interested in rejecting the null hypothesis that the data are normally distributed? 
+- I, personally, have never come across a situation where a normal test is the right thing to do. 
+- **The problem is that when the sample size is small, even big departures from normality are not detected, and when your sample size is large, even the smallest deviation from normality will lead to a rejected null.**
+
+https://www.r-bloggers.com/normality-tests-don%E2%80%99t-do-what-you-think-they-do/
+
 
 ---
 
@@ -243,16 +261,99 @@ Let's compare the body mass index (BMI) of Starwars characters to normal distrib
 - Seems like Jabba Desilijic Tiure is way off the line (15)
 - You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc)
 
+
+---
+
+###  Normality tests are of virtually no value to the data analyst
+
+- In case of Jabba the Hutt, even log-transformnation does not help to restore intergalactic BMI distribution close to normal. 
+- However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMi is still normally distributed, it has just different parameters from many other species (mean BMI is 440-something)
+- We can still go on with this data and model, for example, the relationship between BMI and species or eye-color
+
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+
+
 ---
 
 ## Summary of descriptive statistics
 
-
-- Just by calculating simple arithmetic mean and standard deviation and looking at the distribution of your data you can learn a lot about your variables
-
 - Descriptive statistics is usually the first sanity check of your data
 
-- However, before you go on with exploring and modeling, it's important to understand **what types of variables** to you have in dataset at hand and **which variables are dependent and which ones are independent**
+- Just by calculating simple arithmetic mean and standard deviation and looking at the distribution of your data (histogram and Q-Q plot) you can learn about your variables
+
+- However, before you go on with exploring and modeling, it's important to understand **what types of variables** to you have in your dataset at hand and **which variables are dependent and which ones are independent**
+
+---
+
+class: inverse, center, middle
+
+# Linear models
+
+---
+
+## Predictor and predicted variables
+
+- Suppose we want to predict someone's weight from height. In this case, weight is the predicted variable and height is predictor variable. 
+
+- The difference between predicted and predictor variables is that the predicted variables values are modeled as a function of values of predictor variables. 
+
+- The value of the predictor variable comes from outside of the system being modeled, whereas the value of predicted variable depends on the value of predictor variable
+
+- Therefore, mathematically, not in real life, predictor variable can be called **"independent"** variable and predicted variable can be called **"dependent"** variable
+
+
+???
+
+- Or, suppose we want to predict average score of an elementary school student based on PISA test result and family income, in this case average score is dependent variable and PISA test result and family income are independent variables. 
+
+- Or, suppose we want to predict blood pressure of patients who either take drug A, or take drug B, or take a placebo, or merely wait. In this case blood pressure is the predicted variable and treatment category is the predictor
+
+
+---
+
+## Identify predicted and predictors first
+
+- **The first thing you do in statistical inference, is to identify what variables are you interested in predicting on the basis of what predictors** 
+
+- To rephrase, the key conceptial difference between independent and dependent variables is that the value of dependent variable depends on independent variable
+
+- The term independent can be confusing because it can be used strictly or loosely:
+    - When doing experiment the variables that are actually manipulated are called "independent", here they really are truly independent, because they were set by experimenter
+    - Also, non-manipulated values can be referred to as "independent", merely to indicate that they are being used as a predictor variables
+
+- **Among non-manipulated variables, the roles of predicted and predictor variables are arbitrary**. It's just mathematical dependency not an underlying causal relationship
+
+    
+???
+
+- consider human height and weight, you can use these variables in either way. 
+
+
+---
+
+## Summary of predicted and predictors
+
+&lt;img src="https://imgs.xkcd.com/comics/correlation.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Items can be measured on different scales 
+
+- Whenever we are choosing a model for data, we must answer the question, what kind of scale are we dealing with? 
+
+metric | ordinal | nominal
+-------|---------|--------
+response time, temperature, height, weight, counts | placing in a race, ratings | political party affiliation, face of a rolled dice/coin
+
+- When two items have different nominal values, all we know is that the two items are different  
+- If the two items have different ordinal values, we know that the two items are different and we know which one is "larger" than the other one, but not how much 
+- When we have different metric values , then we know that they are different, which one is larger, and how much larger
+
+???
+
+- For example, participants in a run can be measured by the time they took to run the race, or by their placing in the race (first, second third, etc), or by the name of the team they represent. 
+- These three measurements represent metric, ordinal, and nominal scales, respectively
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
