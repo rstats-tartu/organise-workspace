@@ -42,7 +42,6 @@ class: center, middle
 
 > Scientists don't want to waste time and resources pursuing goals that hava a small probability of being achieved
 
-
 ---
 
 ## What goals scientist can have
@@ -64,7 +63,7 @@ There are many possible goals for an exprimental or observational study:
 1. One might want to show that the parameter/effect size corresponds to the one predicted by theory
     - this goal involved showing that specific value is tenable
 
-1. One might to predict support for political parties
+1. You might want to predict support for political parties
     - this goal involves establishing minimal degree of precision
 
 ---
@@ -72,6 +71,7 @@ There are many possible goals for an exprimental or observational study:
 ## Obstacles
 
 - Random sample is a fickle representation of the true state of the underlying world
+    
     - For example, drugs that actually work no better than a placebo might happen to cure more patients in a particular random sample
     
     - Vice versa, drugs that truly are effective might happen to show little difference from a placebo in another particular random sample of patients
@@ -82,9 +82,9 @@ There are many possible goals for an exprimental or observational study:
 
 In case of null hypothesis significance testing (NHST)
 
-- power has only one goal - rejecting the null hypothesis,
+- power has only one goal - **rejecting the null hypothesis**,
 
-- there is only one conventional sampling plan - stop at predetermined sample size
+- there is only one conventional sampling plan - **stop at predetermined sample size**
 
 - the hypothesis is only a single specific value of the parameter
 
@@ -94,11 +94,11 @@ In case of null hypothesis significance testing (NHST)
 
 - Type II error, $\beta$, is the probability of failing to reject the null hypothesis when it is false
 
-- This is thinking there is no effect when in fact there is 
+- This is thinking that there is no effect when in fact there is 
 
 - Our tolerance for Type II error is usually 0.20 or lower 
 
-- Power is 1 - Type II error
+- Power is 1 - Type II error (the effects that we could detect)
 
 
 ---
@@ -135,7 +135,7 @@ Reducing known or unknown influences is also the primary reason for conducting e
 Let's have an example where we expect to have mean effect size 0.1 with huge standard deviation = 1 and our hypothesis is
 $$H_0: \mu \le 0\\H_a: \mu \gt 0$$
 
-Theoretical distribution of the  alternative hypothesis shows huge overlap with null distribution: `r round(pnorm(0, 0.1, 1), 2) * 100`% of values are smaller than 0. Can we detect such a small effect?
+Theoretical distribution of the  alternative hypothesis shows considerable overlap with null distribution: `r round(pnorm(0, 0.1, 1), 2) * 100`% of values are smaller than 0. Can we detect such a small effect?
 
 ```{r, fig.height=3}
 ggplot(data = data_frame(x = rnorm(1000, 0.1, 1))) +
@@ -145,7 +145,7 @@ ggplot(data = data_frame(x = rnorm(1000, 0.1, 1))) +
 
 ---
 
-First, let' have sample size n = 6
+First, let's test sample size n = 6
 
 ```{r, echo=TRUE}
 set.seed(123)
@@ -162,7 +162,7 @@ t.test(rnorm(60, 0.1, 1))
 
 ---
 
-n = 600, yess!!! Finally have we refuted hypothesis that the true mean is 0! 
+n = 600, yess!!! Finally have we refuted hypothesis that the true mean less than or equal to 0! 
 
 ```{r, echo=TRUE}
 set.seed(123)
@@ -183,7 +183,7 @@ There are two main practical approaches for estimating necessary sample size
 
 ## Example of using quantiles
 
-The internals of custom R function `power()` to calculate power for two-sample t test 
+The internals of *ad hoc* R function `power()` to calculate power for two-sample t test 
 
 ```{r, echo=TRUE}
 #' @param theta alternative hypothesis
