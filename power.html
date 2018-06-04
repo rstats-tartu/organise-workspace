@@ -283,17 +283,16 @@ plot(expected_effect, pow, type = "l", ylim = c(0, 1), main = "My Power Plot wit
 
 ---
 
-- To estimate required sample size to achieve desired power, you need to leave `n` argument to `NULL`. 
+### Estimating sample size or effect size
 
-- You also need to have some prior information or hunch about the expected effect magnitudes and variance:
+- To estimate required sample size to achieve desired power, you need to leave `n` argument to `NULL`. You also need to have some prior information or hunch about the expected effect magnitudes and variance:
 
 
 ```r
 groupmeans &lt;- c(120, 130, 140, 150)
-power.anova.test(groups = length(groupmeans),
-                 between.var = var(groupmeans),
-                 within.var = 200, 
-                 power = .8) 
+power.anova.test(groups = length(groupmeans), 
+                 between.var = var(groupmeans), 
+                 within.var = 200, power = .8)
 ```
 
 ```
