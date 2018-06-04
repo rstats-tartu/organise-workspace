@@ -599,6 +599,9 @@ $$y = \beta_0 + \beta_1x_1 + \dots + \beta_Kx_K$$
 
 - In case of nominal predictors, each value of nominal predictor generates particular deflection of y away from its baseline level
 
+```{r, fig.height=4}
+knitr::include_graphics("img/IMG_20180604_213436.jpg")
+```
 
 
 
