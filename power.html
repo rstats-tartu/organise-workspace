@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # Goals, power, and sample size
 ### Taavi Päll
-### 2018-JUN-05 (updated: 2018-06-03)
+### 2018-JUN-05 (updated: 2018-06-04)
 
 ---
 
@@ -266,7 +266,7 @@ power(theta = 9, mu = 6, var = 16, n = 14)
 ```r
 expected_effect &lt;- seq(1, 12, by = 0.01)
 pow &lt;- power(expected_effect, mu = 6, var = 16, n = 14)
-plot(theta, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
+plot(expected_effect, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
 ```
 
 &lt;img src="power_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
@@ -340,23 +340,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

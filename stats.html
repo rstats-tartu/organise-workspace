@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # Quick intro to statistics
 ### Taavi Päll, Ülo Maiväli
-### 2018-JUN-05 (updated: 2018-06-01)
+### 2018-JUN-05 (updated: 2018-06-04)
 
 ---
 
@@ -79,7 +79,7 @@ class: inverse, center, middle
 
 - Covariance of variables (correlation coeficient)
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-2-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
 
 Which of these summary statistics represents best your intuition about central tendency of this distribution?
 
@@ -96,14 +96,14 @@ Valimi kõige levinumat esindajat iseloomustab mood ehk jaotuse tipp. Seda on ag
 ## Skim your dataset
 
 Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
-&lt;img src="img/skim.png" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/skim.png" style="display: block; margin: auto;" /&gt;
  
 ---
 
 ## Skim your dataset
 
 Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
-&lt;img src="img/skim-rect.png" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/skim-rect.png" style="display: block; margin: auto;" /&gt;
  
 ---
 
@@ -113,7 +113,9 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 - Preferred format for displaying mean and SD in text is: "**mean (SD)**" (not "mean ( `\(\pm\)` SD)") 
 
-- 1 SD covers 68% of normal distribution, 2 SD - 96% and 3 SD - 99%. *Normal distribution has "thin" tails and for example only 1 out of 1 million data points is 5 SD away from mean*
+- **1 SD covers 68% of normal distribution**, 
+- 2 SD - 96% and 
+- 3 SD - 99%. *Normal distribution has "thin" tails and for example only 1 out of 1 million data points is 5 SD away from mean*
 
 ---
 
@@ -124,7 +126,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 - When your IQ is 115 (mean IQ of students admitting university is 1 SD away from population mean), then the probability that random person you encounter on the street has higher IQ than you is 16% ((100% - 68%) / 2 = 16%)
 
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -137,7 +139,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 - Simplest way to fix this situation when there are only positive values in your dataset is to **log transform** your data
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-6-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -154,7 +156,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 ## SD calculated using original log-normal data is way off
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-7-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -203,7 +205,7 @@ dsum &lt;- filter(d, key == "log-transformed") %&gt;%
 
 ## Multiplicative SD placed over distribution
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-9-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -263,7 +265,7 @@ Q-Q plot allows visual evaluation of your variable against theoretical quantiles
 
 Let's compare the body mass index (BMI) of Starwars characters to normal distribution
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
 
 - Seems like Jabba Desilijic Tiure is way off the line (15)
 - You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc)
@@ -277,7 +279,7 @@ Let's compare the body mass index (BMI) of Starwars characters to normal distrib
 - However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMI is still normally distributed with just very different parameters from many other species (e.g. mean BMI is 440-something)
 - We can still go on with this data and model, for example, the relationship between BMI and species or eye-color
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-12-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -317,7 +319,7 @@ class: inverse, center, middle
 
 ---
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-13-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -344,7 +346,7 @@ class: inverse, center, middle
 
 ## Summary of predicted and predictors
 
-&lt;img src="https://imgs.xkcd.com/comics/correlation.png" height="6" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://imgs.xkcd.com/comics/correlation.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -371,7 +373,6 @@ response time, temperature, height, weight, counts   placing in a race, ratings 
 
 
 - siit edasi lineaarne regressioon ja tavalisemad testid, lähtuvalt skaalast
-- katse planeerimine ja statistiline jõud
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
@@ -389,23 +390,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

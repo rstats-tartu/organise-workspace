@@ -13,7 +13,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = 'center', dev = 'svg', out.height = 6)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = 'center', dev = 'svg', fig.height = 6)
 library(tidyverse)
 ggplot2::theme_set(theme_gray(base_size = 18))
 ```
@@ -129,7 +129,9 @@ knitr::include_graphics("img/skim-rect.png")
 
 - Preferred format for displaying mean and SD in text is: "**mean (SD)**" (not "mean ( $\pm$ SD)") 
 
-- 1 SD covers 68% of normal distribution, 2 SD - 96% and 3 SD - 99%. *Normal distribution has "thin" tails and for example only 1 out of 1 million data points is 5 SD away from mean*
+- **1 SD covers 68% of normal distribution**, 
+- 2 SD - 96% and 
+- 3 SD - 99%. *Normal distribution has "thin" tails and for example only 1 out of 1 million data points is 5 SD away from mean*
 
 ---
 
@@ -422,5 +424,5 @@ knitr::kable(scale)
 
 
 - siit edasi lineaarne regressioon ja tavalisemad testid, lähtuvalt skaalast
-- katse planeerimine ja statistiline jõud
+
 

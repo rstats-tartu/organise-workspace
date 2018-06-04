@@ -216,7 +216,7 @@ power(theta = 9, mu = 6, var = 16, n = 14)
 ```{r, echo=TRUE}
 expected_effect <- seq(1, 12, by = 0.01)
 pow <- power(expected_effect, mu = 6, var = 16, n = 14)
-plot(theta, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
+plot(expected_effect, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
 ```
 
 ---
@@ -256,7 +256,4 @@ power.anova.test(groups = length(groupmeans),
 ## Refrences
 
 [Doing bayesian data analysis](https://sites.google.com/site/doingbayesiandataanalysis/what-s-new-in-2nd-ed)
-
-
-
 
