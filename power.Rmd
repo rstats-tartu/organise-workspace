@@ -246,8 +246,63 @@ power.anova.test(groups = length(groupmeans),
 
 ---
 
+## Effect size
+
+- While sample size is easy to understand, then effect size can be in the same sale as original measurements or normalised
+- Cohen describes effect size as "the degree to which the null hypothesis is false"
+- Effect Sizes can be also expressed in the scale of 'small', 'medium', and 'large'
+
+Test|	small|	medium	| large
+----|------|----------|-----
+tests for proportions (p)|	0.2|	0.5|	0.8
+tests for means (t)|	0.2	|0.5|	0.8
+chi-square tests (chisq)|	0.1	|0.3|	0.5
+correlation test (r)	|0.1|	0.3	|0.5
+anova (anov) | 0.1	| 0.25	| 0.4
+general linear model (f2) |	0.02|	0.15|	0.35|
+
+---
+
+Getting 'medium' standardised effect size for t test (Cohens' d)
+
+```{r, echo=TRUE}
+library(pwr)
+cohen.ES(test = "t", size = "medium")
+```
+
+
+
+---
+
 ### pwr.t.test - one-sample and two-sample t tests for means
 
+- We're interested to know if there is a difference in the mean price of what male and female students pay at a library coffee shop. 
+- Let's say we randomly observe 30 male and 30 female students check out from the coffee shop and calculate the mean purchase price for each gender. 
+- How powerful is this experiment if we want to detect a 'medium' effect in either direction with a significance level of 0.05?
+
+```{r, echo=TRUE}
+pwr.t.test(n = 30, d = 0.5, sig.level = 0.05)
+```
+
+.footnote[Source: **pwr** package vignette]
+
+---
+
+Only 48%. Not very powerful. How many students should we observe for a test with 80% power?
+
+```{r, echo=TRUE}
+pwr.t.test(d = 0.5, power = 0.80, sig.level = 0.05)
+```
+
+---
+
+### pwr.t2n.test - two-sample t test for means, unequal sample sizes
+
+Find power for a two-sample t-test with 28 in one group and 35 in the other group and a medium effect size. (sig.level defaults to 0.05.)
+
+```{r, echo=TRUE}
+pwr.t2n.test(n1 = 28, n2 = 35, d = 0.5)
+```
 
 
 ---
