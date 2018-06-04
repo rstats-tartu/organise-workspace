@@ -321,3 +321,4 @@ plot(p.out)
 
 [Doing bayesian data analysis](https://sites.google.com/site/doingbayesiandataanalysis/what-s-new-in-2nd-ed)
 
+[Getting started with the pwr package](https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html)
