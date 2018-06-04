@@ -44,13 +44,13 @@ class: inverse, center, middle
 
 ## Statistics answers scientific questions indirectly
 
-- Main function of statistics is to quantitate the uncertainty when we seek answers to above questions (p-values, posterior distribution of effect size)
+- Main function of statistics is to quantitate and control the uncertainty when we seek answers to our questions
 
-- Statistics never answers scientific questions or questions about the state of real world directly, it's more like what is the probability of data given that null hypothesis is true
+- Statistics answers scientific questions indirectly, like what is the probability of data given that null hypothesis is true
 
-- Answers that statistics provides remain always confined to our data and models, putting emphasis on representative sampling. *Therefore one should always prefer well collected, rich data and flexible models in order to keep divergency between model coeficients and real world as small as possible (better data means better models)*
+- Answers that statistics provides remain always confined to our data and models, which puts large emphasis on representative sampling. *Therefore one should always prefer well collected, rich data and flexible models in order to keep divergency between model coeficients and real world as small as possible (better data means better models)*
 
-- Statistical inferences are always uncertain
+- Statistical inferences are always uncertain, there is always danger that we have done the wrong choice
 
 ---
 
@@ -75,7 +75,7 @@ class: inverse, center, middle
 
 - Typical observation of the sample (mean, median, mode)
 
-- Variance of observations (standard deviation, MAD),
+- Variance of observations (standard deviation, median absolute deviation),
 
 - Covariance of variables (correlation coeficient)
 
@@ -96,6 +96,7 @@ Valimi kõige levinumat esindajat iseloomustab mood ehk jaotuse tipp. Seda on ag
 ## Skim your dataset
 
 Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
+
 &lt;img src="img/skim.png" style="display: block; margin: auto;" /&gt;
  
 ---
@@ -103,6 +104,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 ## Skim your dataset
 
 Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
+
 &lt;img src="img/skim-rect.png" style="display: block; margin: auto;" /&gt;
  
 ---
@@ -113,7 +115,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 - Preferred format for displaying mean and SD in text is: "**mean (SD)**" (not "mean ( `\(\pm\)` SD)") 
 
-- **1 SD covers 68% of normal distribution**, 
+- It's important to remember that **1 SD covers 68% of distribution**, 
 - 2 SD - 96% and 
 - 3 SD - 99%. *Normal distribution has "thin" tails and for example only 1 out of 1 million data points is 5 SD away from mean*
 
@@ -128,14 +130,13 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 &lt;img src="stats_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
 
+- This can be also calculated with `pnorm(115, 100, 15, lower.tail = FALSE)`
 
 ---
 
 ## When your distribution is not that "normal"
 
-- When your real life distribution has long or "fat" tails or has outliers then formula for calculating SD for normal distribution `\(s = \sqrt{\frac{\sum_{i=1}^N (x_i- \bar x)^2} {N - 1}}\)` will overestimate SD and sample variance  
-
-- When your data can only have positive values, then SD&gt;mean/2 suggests that your data is not compatible with the normal model 
+- When your real life distribution has long or "fat" tails or has outliers then formula for calculating SD for normal distribution `\(s = \sqrt{\frac{\sum_{i=1}^N (x_i- \bar x)^2} {N - 1}}\)` will overestimate SD and sample variance
 
 - Simplest way to fix this situation when there are only positive values in your dataset is to **log transform** your data
 
@@ -145,11 +146,13 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 ???
 
-- normal model predicts negative values with relatively high frequency
+- normal model predicts negative values with relatively high frequency!!!
+
 - igale jaotusele, mida me oskame integreerida, saab ka integraali abil õige katvusega standardhälbe arvutada. 
-- Seega tasub meeles pidada, et tavapärane viis standardhälbe arvutamiseks sd() abil kehtib normaaljaotuse mudeli piirides ja ei kusagil mujal! 
+
+- Seega tasub meeles pidada, et tavapärane viis standardhälbe arvutamiseks sd() abil kehtib normaaljaotuse mudeli piirides ja ei kusagil mujal!
+
 - Siiski, kui arvutada standardhälbe sd()-ga, võib olla kindel, jaotusest sõltumata hõlvavad 2 SD-d vähemalt 75% andmejaotusest. 
-- Kui andmed ei sobi normaaljaotusesse ja te ei ole rahul tulemusega, mille tõlgendus on nii ebakindel kui 75 protsenti kuni 96+ protsenti, võib pakkuda kahte alternatiivset lahendust:
 
 
 ---
@@ -162,7 +165,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 ## Mean and SD from log transformed data
 
-- Calculate mean and SD using log-transformed data and then convert them back to linear scale with anti-log. *For example, when `\(log_2(10) = 3.32\)`, then anti-log is `\(2^{3.32} = 10\)`*
+- Calculate mean and SD using log-transformed data and then convert them back to linear scale by taking anti-log. *For example, when `\(log_2(10) = 3.32\)`, then anti-log is `\(2^{3.32} = 10\)`*
 
 - In this case, geometric mean and **geometric/multiplicative SD** is presented in the original scale:
     - multiplicative SD = geometric mean x SD; geometric mean / SD
@@ -183,11 +186,14 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 # calculate mean and sd using log-trans data
 # library(tidyverse)
 set.seed(123)
+
 d &lt;- data_frame(`log-normal` = rlnorm(1000)) %&gt;%
   mutate(`log-transformed` = log(`log-normal`)) %&gt;%
   gather()
+
 dsum &lt;- filter(d, key == "log-transformed") %&gt;% 
   summarise_at(vars(value), funs(mean, sd))
+
 # convert calculated mean and sd back to original scale using exp
 (bounds &lt;- transmute_at(dsum, vars(mean, sd), exp) %&gt;% 
   transmute(lower_1sd = mean / sd, upper_1sd = mean * sd,
@@ -206,7 +212,6 @@ dsum &lt;- filter(d, key == "log-transformed") %&gt;%
 ## Multiplicative SD placed over distribution
 
 &lt;img src="stats_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
-
 
 ---
 
@@ -237,7 +242,7 @@ filter(d, key == "log-normal") %&gt;%
 
 - Before you start with various normality tests, keep in mind that when your sample is not normal it does not mean automatically that the undelying population is also non-normal
 
-- However, you would expect your sample to have the same distribution as the population. If it isn't, either your sample is very small or something went wrong somewhere
+- However, you would expect your sample to have the same distribution as the population. If it isn't, either your sample is very small or something went wrong somewhere..
 
 - **Misconception: If your statistical analysis requires normality, it is a good idea to use a preliminary hypothesis test to screen for departures from normality**
 
@@ -247,19 +252,22 @@ filter(d, key == "log-normal") %&gt;%
 
 ???
 
-- Shapiro’s test, Anderson Darling, and others are null hypothesis tests against the the assumption of normality. 
+- Shapiro's test, Anderson Darling, and others are null hypothesis tests against the the assumption of normality. 
+
 - These should not be used to determine whether to use normal theory statistical procedures. 
+
 - In fact they are of virtually no value to the data analyst. 
+
 - Under what conditions are we interested in rejecting the null hypothesis that the data are normally distributed? 
+
 - I, personally, have never come across a situation where a normal test is the right thing to do. 
+
 - **The problem is that when the sample size is small, even big departures from normality are not detected, and when your sample size is large, even the smallest deviation from normality will lead to a rejected null.**
 
 https://www.r-bloggers.com/normality-tests-don%E2%80%99t-do-what-you-think-they-do/
 
-
 ---
-
-## Q-Q plot to compare data to theoretical distribution
+### Q-Q plot to compare data to theoretical distribution
 
 Q-Q plot allows visual evaluation of your variable against theoretical quantiles of a comparison distribution, e.g. normal distribution. R has at least two function to draw a Q-Q plot `qqplot` from **stats** package and `qqPlot` from **car** package. 
 
@@ -267,9 +275,7 @@ Let's compare the body mass index (BMI) of Starwars characters to normal distrib
 
 &lt;img src="stats_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
 
-- Seems like Jabba Desilijic Tiure is way off the line (15)
-- You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc)
-
+.footnote[Seems like Jabba Desilijic Tiure is way off the line (15). You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc). How to [interpret a Q-Q plot](https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot)]
 
 ---
 
@@ -328,7 +334,7 @@ class: inverse, center, middle
 
 - **The first thing you do in statistical inference, is to identify what variables are you interested in predicting on the basis of what predictors** 
 
-- To rephrase, the key conceptial difference between independent and dependent variables is that the value of dependent variable depends on independent variable
+- To rephrase, the key conceptual difference between independent and dependent variables is that the value of dependent variable depends on independent variable
 
 - The term independent can be confusing because it can be used strictly or loosely:
     - When doing experiment the variables that are actually manipulated are called "independent", here they really are truly independent, because they were set by experimenter
@@ -349,30 +355,199 @@ class: inverse, center, middle
 &lt;img src="https://imgs.xkcd.com/comics/correlation.png" style="display: block; margin: auto;" /&gt;
 
 ---
+class: inverse, center, middle
+
+# Scales of variables
+
+---
 
 ## Items can be measured on different scales 
 
 - Whenever we are choosing a model for data, we must answer the question, what kind of scale are we dealing with? 
 
 
-metric                                                ordinal                      nominal                                                
----------------------------------------------------  ---------------------------  --------------------------------------------------------
-response time, temperature, height, weight, counts   placing in a race, ratings   political party affiliation, face of a rolled dice/coin 
+metric | ordinal | nominal
+-------|---------|---------
+response time, temperature, height, weight, counts | placing in a race, ratings | political party affiliation, face of a rolled dice/coin
 
 
+---
 
+## Levels of granularity
 
 - When two items have different nominal values, all we know is that the two items are different  
+
 - If the two items have different ordinal values, we know that the two items are different and we know which one is "larger" than the other one, but not how much 
+
 - When we have different metric values , then we know that they are different, which one is larger, and how much larger
 
 ???
 
-- For example, participants in a footrace can be measured by the time they took to run the race, or by their placing in the race (first, second third, etc), or by the name of the team they represent. 
+- For example, participants in a footrace can be measured by 
+
+    1. the time they took to run the race, or 
+    1. by their placing in the race (first, second third, etc), or 
+    1. by the name of the team they represent
+
 - These three measurements represent metric, ordinal, and nominal scales, respectively
 
+---
 
-- siit edasi lineaarne regressioon ja tavalisemad testid, lähtuvalt skaalast
+## Choosing right test: nominal variables
+
+(Non-exhaustive)
+- Use the **exact binomial test** (small N) or **Chi-square test of goodness-of-fit** (large N) when you have one nominal variable with two or more values (such as red, pink and white flowers)
+
+- Use the **Fisher's exact test of independence** when you have two nominal variables and you want to see whether the proportions of one variable are different depending on the value of the other variable. Use it when the sample size is small
+
+.footnote[
+[Testchoice](http://www.biostathandbook.com/testchoice.html)
+]
+
+???
+
+- count the number of red, pink and white flowers in a genetic cross, test fit to expected 1:2:1 ratio, total sample &lt;1000
+
+---
+
+### Observed and expected frequencies for leukemia
+
+Treatment |Success|Failure|Row total
+----------|-------|-------|---------
+Prednisone| 14 (17.33) | 7 (3.67)| 21
+Prednisone + VCR| 38 (34.67)| 4 (7.33) | 42
+Column total| 52 | 11 | 63
+
+- We want to test if the success and failure probabilities are the same for Prednisone and Prednisone + VCR
+
+- H0 : Both treatment groups have equal success probability
+
+.footnote[
+Data: Tamhane and Dunlop 2000, p. 326
+]
+
+---
+
+### Example: Fisher's Exact Test
+
+
+```r
+prednisone &lt;- matrix(c(14, 7, 38, 4), nrow = 2, dimnames = list(c("Success", "Failure"), c("Prednisone", "Prednisone + VCR")))
+fisher.test(prednisone)
+```
+
+```
+## 
+## 	Fisher's Exact Test for Count Data
+## 
+## data:  prednisone
+## p-value = 0.03232
+## alternative hypothesis: true odds ratio is not equal to 1
+## 95 percent confidence interval:
+##  0.03998108 1.00410538
+## sample estimates:
+## odds ratio 
+##  0.2166817
+```
+
+---
+
+### Example: Chi-squared test
+
+
+```
+## 
+## 	Pearson's Chi-squared test with Yates' continuity correction
+## 
+## data:  prednisone
+## X-squared = 3.9788, df = 1, p-value = 0.04608
+```
+
+```
+##         Prednisone Prednisone + VCR
+## Success  17.333333        34.666667
+## Failure   3.666667         7.333333
+```
+
+---
+
+## Choosing right test: Ranked variables
+
+- One common application of the exact binomial test is known as the **sign test**. You use the sign test when there are two nominal variables and one measurement variable. Test randomness of direction of difference in paired data
+
+- The data for a sign test could be also analysed using a paired t–test or a **Wilcoxon signed-rank test**, if the null hypothesis is that the mean or median difference between pairs of observations is zero. However, sometimes you're not interested in the size of the difference, just the direction
+
+- Use the **Kruskal–Wallis test** when you have one nominal variable and one ranked variable. It tests whether the mean ranks are the same in all the groups. It's similar to one-way anova, but can be used in cases when you are not sure whether normality assumption holds
+
+???
+
+- We are going to use Wilcoxon sign-rank test in your data examples!
+
+## Choosing right test: metric variables
+
+- Most common uses of linear models in bioscience are: 
+    - Metric response and one or more metric predictors: linear model, t test
+    - Metric response nominal predicor: linear model, anova (e.g. average height across both sexes)
+
+---
+
+## Simple linear model
+
+- Let's say we measured length and weight of N persons and we are interested how weight influences the height
+- Simplest model is height = weight (y = x) and this model predict that when Juhans weight = 80 kg, then Juhan is 80 cm long
+- Here y is predicted and x predictor variable 
+- This model has no coefficients
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-16-1.svg" style="display: block; margin: auto;" /&gt;
+
+???
+
+- Sirge lõikab y telge alati 0-s (mudeli keeles: sirge intercept ehk lõikepunkt Y teljel = 0) ja 
+- tema tõusunurk saab olla ainult 45 kraadi (mudeli keeles: mudeli slope ehk tõus = 1). - Selle mudeli jäikus tuleneb sellest, et temas ei ole parameetreid, mille väärtusi me saaksime vabalt muuta ehk tuunida.
+
+---
+
+## Adding constant to linear model
+
+- What happens when we add a constant **a** = 20 to x y = a + x
+- Constant **a** determines the value of y, when x = 0, and is model coefficent - **intercept**
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-17-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Changing slope of linear model
+
+- What happens when we don't add but multiply x with constant: y = b * x
+- Now changes the slope of the line, when x increases one unit then y increases 3 units
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Simple linear model with two coefficents
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-19-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+## General mathematical form of linear function
+
+- The general mathematical form of linear function is:
+
+`$$y = \beta_0 + \beta_1x$$`
+
+- The value of parameter `\(\beta_0\)` is called the intercept because it's where the line intercects the y-axis when x = 0
+- The value of parameter `\(\beta_1\)` is called the slope because it indicates how much y increases when x increases by 1
+- If we have more than one predictor variable, the function has form:
+
+`$$y = \beta_0 + \beta_1x_1 + \dots + \beta_Kx_K$$`
+
+---
+
+## Linear function with nominal predictors
+
+- In case of nominal predictors, each value of nominal predictor generates particular deflection of y away from its baseline level
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
@@ -390,12 +565,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Planning of the experiment taking into account data analysis (number of parallels)
 
+
+
 ## Research questions
 
 ## Choosing the most suitable regression model for analysis. 
