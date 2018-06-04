@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Goals, power, and sample size</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Taavi Päll" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Goals, power, and sample size
+### Taavi Päll
+### 2018-JUN-05 (updated: 2018-06-03)
+
+---
+
+
+
+
+class: inverse, center, middle
+
+# Goals
+
+---
+
+## Statistics goals are probabilistic
+
+- Researchers collect data and do experiment to achieve a goal
+
+- Whatever the goal, it can only probabilistically achieved, as opposed to definitely achieved. 
+
+- There remains always uncertainty, because data are filled with random noise that can obscure the underlying state of the world
+
+- *Statistical power* is the probability of achieveing the goal of a planned empirical study, if a suspected underlying state of the world is true
+
+---
+
+class: center, middle
+
+## Researchers desire power
+
+&gt; Scientists don't want to waste time and resources pursuing goals that hava a small probability of being achieved
+
+
+---
+
+## What goals scientist can have
+
+1. Reject null value of a parameter
+
+1. Affirm a predicted value of a parameter
+
+1. Achieve precision in the estimate of a parameter
+
+
+???
+
+There are many possible goals for an exprimental or observational study:
+
+1. For example, one might want to show that the rate of recovery for patients taking drug is higher than the rate of recovery for patients who take placebo
+    - this goal involves showing that the null value (zero difference) is not well-founded 
+
+1. One might want to show that the parameter/effect size corresponds to the one predicted by theory
+    - this goal involved showing that specific value is tenable
+
+1. One might to predict support for political parties
+    - this goal involves establishing minimal degree of precision
+
+---
+
+## Obstacles
+
+- Random sample is a fickle representation of the true state of the underlying world
+    - For example, drugs that actually work no better than a placebo might happen to cure more patients in a particular random sample
+    
+    - Vice versa, drugs that truly are effective might happen to show little difference from a placebo in another particular random sample of patients
+
+---
+
+## Power
+
+In case of null hypothesis significance testing (NHST)
+
+- power has only one goal - rejecting the null hypothesis,
+
+- there is only one conventional sampling plan - stop at predetermined sample size
+
+- the hypothesis is only a single specific value of the parameter
+
+---
+
+## When there is effect but you fail to detect it
+
+- Type II error, `\(\beta\)`, is the probability of failing to reject the null hypothesis when it is false
+
+- This is thinking there is no effect when in fact there is 
+
+- Our tolerance for Type II error is usually 0.20 or lower 
+
+- Power is 1 - Type II error
+
+
+---
+
+## Three methods to increase power
+
+1. Reduce measurement noise 
+
+1. Increase effect size
+
+1. Increase sample size - with more and more measurements, random noises will tend to cancel themselves out, making underlying effect more clearly visible
+
+???
+
+- for example if we want to determine the effect of cure to patient, we try to reduce other random influences to patient, such as other drugs they might be taking, changes in diet or rest. 
+Reducing known or unknown influences is also the primary reason for conducting experiments in lab
+
+- For example, when studying effect of an drug, we try to administer as large dose as possible (considering possible side effects)
+
+---
+
+## Sample size
+
+- In general, when sample size increases, power increases, and increasing sample size is usually an option in most studies
+
+- Gathering data is costly and we would like to estimate what is the minimal sample size that is required to achieve a desired goal
+
+- Under NHST paradigm, increasing sample size can make any effect statistically significant, then one must ask also whether such effect size is meaningful (e.g -1 mean decrase in blood pressure in response of a new drug)
+
+---
+
+### Increasing sample size can make any effect statistically significant
+
+Let's have an example where we expect to have mean effect size 0.1 with huge standard deviation = 1 and our hypothesis is
+`$$H_0: \mu \le 0\\H_a: \mu \gt 0$$`
+
+Theoretical distribution of the  alternative hypothesis shows huge overlap with null distribution: 46% of values are smaller than 0. Can we detect such a small effect?
+
+&lt;img src="power_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+First, let' have sample size n = 6
+
+
+```r
+set.seed(123)
+t.test(rnorm(6, 0.1, 1))
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  rnorm(6, 0.1, 1)
+## t = 1.4034, df = 5, p-value = 0.2195
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -0.4550608  1.5493662
+## sample estimates:
+## mean of x 
+## 0.5471527
+```
+
+---
+
+n = 60, still not significant..
+
+```r
+set.seed(123)
+t.test(rnorm(60, 0.1, 1))
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  rnorm(60, 0.1, 1)
+## t = 1.4092, df = 59, p-value = 0.164
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -0.0695578  0.4007924
+## sample estimates:
+## mean of x 
+## 0.1656173
+```
+
+---
+
+n = 600, yess!!! Finally have we refuted hypothesis that the true mean is 0! 
+
+
+```r
+set.seed(123)
+t.test(rnorm(600, 0.1, 1))
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  rnorm(600, 0.1, 1)
+## t = 3.0852, df = 599, p-value = 0.002128
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  0.04425731 0.19929345
+## sample estimates:
+## mean of x 
+## 0.1217754
+```
+
+---
+
+## How big/small sample do I need to achieve my goal?
+
+There are two main practical approaches for estimating necessary sample size
+
+1. Obtain quantiles of sampling distribution under null and calculate probability of obtaining more extreme values than desired effect size
+
+1. simulate statistical tests using theoretical distributions and effect size, and calculate proportion of tests rejecting null (more intuitive)
+
+---
+
+## Example of using quantiles
+
+The internals of custom R function `power()` to calculate power for two-sample t test 
+
+
+```r
+#' @param theta alternative hypothesis
+#' @param mu null hypothesis
+#' @param var variance
+#' @param n population or sample size
+#' @param alpha significance level 
+power &lt;- function(theta, mu, var, n, alpha = 0.05) {
+  # upper and lower critical values
+  crit_lo &lt;- qnorm(alpha / 2, mu, sqrt(var / n)) 
+  crit_up &lt;- qnorm(1 - alpha / 2, mu, sqrt(var / n))
+  # probability of obtaining more extreme values than critical values under
+  # alternative hypothesis
+  pr_up &lt;- pnorm(crit_up, theta, sd = sqrt(var / n), lower.tail = FALSE)
+  pr_lo &lt;- pnorm(crit_lo, theta, sd = sqrt(var / n))
+  # sum up both tails
+  pr_lo + pr_up
+}
+```
+
+
+---
+
+This is how you use above function:
+
+
+```r
+power(theta = 9, mu = 6, var = 16, n = 14)
+```
+
+```
+## [1] 0.8013024
+```
+
+
+```r
+expected_effect &lt;- seq(1, 12, by = 0.01)
+pow &lt;- power(expected_effect, mu = 6, var = 16, n = 14)
+plot(theta, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
+```
+
+&lt;img src="power_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Calculate power with R
+
+- In addition to shown *ad hoc* function, there are multiple other functions in R to assess statistical power: 
+
+    - `power.t.test()`, `power.anova.test()`, `power.prop.test()` from **stats** package (loaded by default)
+    
+    - power functions from **pwr** package
+
+---
+
+- To estimate required sample size to achieve desired power, you need to leave `n` argument to `NULL`. 
+
+- You also need to have some prior information or hunch about the expected effect magnitudes and variance:
+
+
+```r
+groupmeans &lt;- c(120, 130, 140, 150)
+power.anova.test(groups = length(groupmeans),
+                 between.var = var(groupmeans),
+                 within.var = 200, 
+                 power = .8) 
+```
+
+```
+## 
+##      Balanced one-way analysis of variance power calculation 
+## 
+##          groups = 4
+##               n = 5.444179
+##     between.var = 166.6667
+##      within.var = 200
+##       sig.level = 0.05
+##           power = 0.8
+## 
+## NOTE: n is number in each group
+```
+
+- Result shows that at minimal sample size is 6 (always round n upwards) in each group.
+
+---
+
+### pwr.t.test - one-sample and two-sample t tests for means
+
+
+
+---
+
+## Refrences
+
+[Doing bayesian data analysis](https://sites.google.com/site/doingbayesiandataanalysis/what-s-new-in-2nd-ed)
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

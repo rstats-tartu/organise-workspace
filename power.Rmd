@@ -1,0 +1,262 @@
+---
+title: "Goals, power, and sample size"
+author: "Taavi Päll"
+date: "2018-JUN-05 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = 'center', dev = 'svg', fig.height = 4)
+library(tidyverse)
+ggplot2::theme_set(theme_gray(base_size = 18))
+```
+
+class: inverse, center, middle
+
+# Goals
+
+---
+
+## Statistics goals are probabilistic
+
+- Researchers collect data and do experiment to achieve a goal
+
+- Whatever the goal, it can only probabilistically achieved, as opposed to definitely achieved. 
+
+- There remains always uncertainty, because data are filled with random noise that can obscure the underlying state of the world
+
+- *Statistical power* is the probability of achieveing the goal of a planned empirical study, if a suspected underlying state of the world is true
+
+---
+
+class: center, middle
+
+## Researchers desire power
+
+> Scientists don't want to waste time and resources pursuing goals that hava a small probability of being achieved
+
+
+---
+
+## What goals scientist can have
+
+1. Reject null value of a parameter
+
+1. Affirm a predicted value of a parameter
+
+1. Achieve precision in the estimate of a parameter
+
+
+???
+
+There are many possible goals for an exprimental or observational study:
+
+1. For example, one might want to show that the rate of recovery for patients taking drug is higher than the rate of recovery for patients who take placebo
+    - this goal involves showing that the null value (zero difference) is not well-founded 
+
+1. One might want to show that the parameter/effect size corresponds to the one predicted by theory
+    - this goal involved showing that specific value is tenable
+
+1. One might to predict support for political parties
+    - this goal involves establishing minimal degree of precision
+
+---
+
+## Obstacles
+
+- Random sample is a fickle representation of the true state of the underlying world
+    - For example, drugs that actually work no better than a placebo might happen to cure more patients in a particular random sample
+    
+    - Vice versa, drugs that truly are effective might happen to show little difference from a placebo in another particular random sample of patients
+
+---
+
+## Power
+
+In case of null hypothesis significance testing (NHST)
+
+- power has only one goal - rejecting the null hypothesis,
+
+- there is only one conventional sampling plan - stop at predetermined sample size
+
+- the hypothesis is only a single specific value of the parameter
+
+---
+
+## When there is effect but you fail to detect it
+
+- Type II error, $\beta$, is the probability of failing to reject the null hypothesis when it is false
+
+- This is thinking there is no effect when in fact there is 
+
+- Our tolerance for Type II error is usually 0.20 or lower 
+
+- Power is 1 - Type II error
+
+
+---
+
+## Three methods to increase power
+
+1. Reduce measurement noise 
+
+1. Increase effect size
+
+1. Increase sample size - with more and more measurements, random noises will tend to cancel themselves out, making underlying effect more clearly visible
+
+???
+
+- for example if we want to determine the effect of cure to patient, we try to reduce other random influences to patient, such as other drugs they might be taking, changes in diet or rest. 
+Reducing known or unknown influences is also the primary reason for conducting experiments in lab
+
+- For example, when studying effect of an drug, we try to administer as large dose as possible (considering possible side effects)
+
+---
+
+## Sample size
+
+- In general, when sample size increases, power increases, and increasing sample size is usually an option in most studies
+
+- Gathering data is costly and we would like to estimate what is the minimal sample size that is required to achieve a desired goal
+
+- Under NHST paradigm, increasing sample size can make any effect statistically significant, then one must ask also whether such effect size is meaningful (e.g -1 mean decrase in blood pressure in response of a new drug)
+
+---
+
+### Increasing sample size can make any effect statistically significant
+
+Let's have an example where we expect to have mean effect size 0.1 with huge standard deviation = 1 and our hypothesis is
+$$H_0: \mu \le 0\\H_a: \mu \gt 0$$
+
+Theoretical distribution of the  alternative hypothesis shows huge overlap with null distribution: `r round(pnorm(0, 0.1, 1), 2) * 100`% of values are smaller than 0. Can we detect such a small effect?
+
+```{r, fig.height=3}
+ggplot(data = data_frame(x = rnorm(1000, 0.1, 1))) +
+  geom_histogram(mapping = aes(x = x)) +
+  geom_vline(xintercept = 0.1, linetype = "dashed", size = 1)
+```
+
+---
+
+First, let' have sample size n = 6
+
+```{r, echo=TRUE}
+set.seed(123)
+t.test(rnorm(6, 0.1, 1))
+```
+
+---
+
+n = 60, still not significant..
+```{r, echo=TRUE}
+set.seed(123)
+t.test(rnorm(60, 0.1, 1))
+```
+
+---
+
+n = 600, yess!!! Finally have we refuted hypothesis that the true mean is 0! 
+
+```{r, echo=TRUE}
+set.seed(123)
+t.test(rnorm(600, 0.1, 1))
+```
+
+---
+
+## How big/small sample do I need to achieve my goal?
+
+There are two main practical approaches for estimating necessary sample size
+
+1. Obtain quantiles of sampling distribution under null and calculate probability of obtaining more extreme values than desired effect size
+
+1. simulate statistical tests using theoretical distributions and effect size, and calculate proportion of tests rejecting null (more intuitive)
+
+---
+
+## Example of using quantiles
+
+The internals of custom R function `power()` to calculate power for two-sample t test 
+
+```{r, echo=TRUE}
+#' @param theta alternative hypothesis
+#' @param mu null hypothesis
+#' @param var variance
+#' @param n population or sample size
+#' @param alpha significance level 
+power <- function(theta, mu, var, n, alpha = 0.05) {
+  # upper and lower critical values
+  crit_lo <- qnorm(alpha / 2, mu, sqrt(var / n)) 
+  crit_up <- qnorm(1 - alpha / 2, mu, sqrt(var / n))
+  # probability of obtaining more extreme values than critical values under
+  # alternative hypothesis
+  pr_up <- pnorm(crit_up, theta, sd = sqrt(var / n), lower.tail = FALSE)
+  pr_lo <- pnorm(crit_lo, theta, sd = sqrt(var / n))
+  # sum up both tails
+  pr_lo + pr_up
+}
+```
+
+
+---
+
+This is how you use above function:
+
+```{r, echo=TRUE}
+power(theta = 9, mu = 6, var = 16, n = 14)
+```
+
+```{r, echo=TRUE}
+expected_effect <- seq(1, 12, by = 0.01)
+pow <- power(expected_effect, mu = 6, var = 16, n = 14)
+plot(theta, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
+```
+
+---
+
+## Calculate power with R
+
+- In addition to shown *ad hoc* function, there are multiple other functions in R to assess statistical power: 
+
+    - `power.t.test()`, `power.anova.test()`, `power.prop.test()` from **stats** package (loaded by default)
+    
+    - power functions from **pwr** package
+
+---
+
+- To estimate required sample size to achieve desired power, you need to leave `n` argument to `NULL`. 
+
+- You also need to have some prior information or hunch about the expected effect magnitudes and variance:
+
+```{r, echo=TRUE}
+groupmeans <- c(120, 130, 140, 150)
+power.anova.test(groups = length(groupmeans),
+                 between.var = var(groupmeans),
+                 within.var = 200, 
+                 power = .8) 
+```
+
+- Result shows that at minimal sample size is 6 (always round n upwards) in each group.
+
+---
+
+### pwr.t.test - one-sample and two-sample t tests for means
+
+
+
+---
+
+## Refrences
+
+[Doing bayesian data analysis](https://sites.google.com/site/doingbayesiandataanalysis/what-s-new-in-2nd-ed)
+
+
+
+

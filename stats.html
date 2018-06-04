@@ -79,7 +79,7 @@ class: inverse, center, middle
 
 - Covariance of variables (correlation coeficient)
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-2-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 Which of these summary statistics represents best your intuition about central tendency of this distribution?
 
@@ -96,14 +96,14 @@ Valimi kõige levinumat esindajat iseloomustab mood ehk jaotuse tipp. Seda on ag
 ## Skim your dataset
 
 Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
-&lt;img src="img/skim.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/skim.png" height="6" style="display: block; margin: auto;" /&gt;
  
 ---
 
 ## Skim your dataset
 
 Let's have a look at the summary stats of some variables of Starwars movie characters from `tidyverse::starwars` data:
-&lt;img src="img/skim-rect.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/skim-rect.png" height="6" style="display: block; margin: auto;" /&gt;
  
 ---
 
@@ -124,7 +124,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 - When your IQ is 115 (mean IQ of students admitting university is 1 SD away from population mean), then the probability that random person you encounter on the street has higher IQ than you is 16% ((100% - 68%) / 2 = 16%)
 
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -137,7 +137,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 - Simplest way to fix this situation when there are only positive values in your dataset is to **log transform** your data
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-6-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -154,7 +154,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 ## SD calculated using original log-normal data is way off
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-7-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -174,14 +174,18 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 ---
 
-
+## Example calculation of multiplicative SD bounds
 
 
 ```r
 # calculate mean and sd using log-trans data
+# library(tidyverse)
+set.seed(123)
+d &lt;- data_frame(`log-normal` = rlnorm(1000)) %&gt;%
+  mutate(`log-transformed` = log(`log-normal`)) %&gt;%
+  gather()
 dsum &lt;- filter(d, key == "log-transformed") %&gt;% 
   summarise_at(vars(value), funs(mean, sd))
-
 # convert calculated mean and sd back to original scale using exp
 (bounds &lt;- transmute_at(dsum, vars(mean, sd), exp) %&gt;% 
   transmute(lower_1sd = mean / sd, upper_1sd = mean * sd,
@@ -192,16 +196,19 @@ dsum &lt;- filter(d, key == "log-transformed") %&gt;%
 ## # A tibble: 1 x 4
 ##   lower_1sd upper_1sd lower_2sd upper_2sd
 ##       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1     0.390      2.58     0.195      5.17
+## 1     0.377      2.74     0.188      5.48
 ```
 
 ---
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+## Multiplicative SD placed over distribution
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-9-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
+## Fraction of values within multiplicative SD bounds 
 
 
 ```r
@@ -215,7 +222,7 @@ filter(d, key == "log-normal") %&gt;%
 ## # A tibble: 1 x 2
 ##   fraction_data_1SD fraction_data_2SD
 ##               &lt;dbl&gt;             &lt;dbl&gt;
-## 1             0.673             0.923
+## 1             0.674             0.908
 ```
 
 .footnote[Code can be found at [rstats-tln/fmtdk-course/master/stats.Rmd](https://raw.githubusercontent.com/rstats-tln/fmtdk-course/master/stats.Rmd?token=AEl8JvIQ0g8KRAUmbaAytLfPJVFc8OTdks5bGTe0wA%3D%3D) file]
@@ -256,7 +263,7 @@ Q-Q plot allows visual evaluation of your variable against theoretical quantiles
 
 Let's compare the body mass index (BMI) of Starwars characters to normal distribution
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 - Seems like Jabba Desilijic Tiure is way off the line (15)
 - You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc)
@@ -267,22 +274,21 @@ Let's compare the body mass index (BMI) of Starwars characters to normal distrib
 ###  Normality tests are of virtually no value to the data analyst
 
 - In case of Jabba the Hutt, even log-transformnation does not help to restore intergalactic BMI distribution close to normal. 
-- However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMi is still normally distributed, it has just different parameters from many other species (mean BMI is 440-something)
+- However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMI is still normally distributed with just very different parameters from many other species (e.g. mean BMI is 440-something)
 - We can still go on with this data and model, for example, the relationship between BMI and species or eye-color
 
-
-&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-12-1.svg" height="6" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 ## Summary of descriptive statistics
 
-- Descriptive statistics is usually the first sanity check of your data
+- Descriptive statistics provides the first sanity check of your data
 
 - Just by calculating simple arithmetic mean and standard deviation and looking at the distribution of your data (histogram and Q-Q plot) you can learn about your variables
 
-- However, before you go on with exploring and modeling, it's important to understand **what types of variables** to you have in your dataset at hand and **which variables are dependent and which ones are independent**
+- However, before you go on with exploring and modeling of data, it's important to understand **what types of variables** to you have in your dataset at hand and **which variables are dependent and which ones are independent**
 
 ---
 
@@ -309,6 +315,10 @@ class: inverse, center, middle
 
 - Or, suppose we want to predict blood pressure of patients who either take drug A, or take drug B, or take a placebo, or merely wait. In this case blood pressure is the predicted variable and treatment category is the predictor
 
+---
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-13-1.svg" height="6" style="display: block; margin: auto;" /&gt;
+
 
 ---
 
@@ -334,7 +344,7 @@ class: inverse, center, middle
 
 ## Summary of predicted and predictors
 
-&lt;img src="https://imgs.xkcd.com/comics/correlation.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="https://imgs.xkcd.com/comics/correlation.png" height="6" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -342,9 +352,13 @@ class: inverse, center, middle
 
 - Whenever we are choosing a model for data, we must answer the question, what kind of scale are we dealing with? 
 
-metric | ordinal | nominal
--------|---------|--------
-response time, temperature, height, weight, counts | placing in a race, ratings | political party affiliation, face of a rolled dice/coin
+
+metric                                                ordinal                      nominal                                                
+---------------------------------------------------  ---------------------------  --------------------------------------------------------
+response time, temperature, height, weight, counts   placing in a race, ratings   political party affiliation, face of a rolled dice/coin 
+
+
+
 
 - When two items have different nominal values, all we know is that the two items are different  
 - If the two items have different ordinal values, we know that the two items are different and we know which one is "larger" than the other one, but not how much 
@@ -352,8 +366,12 @@ response time, temperature, height, weight, counts | placing in a race, ratings 
 
 ???
 
-- For example, participants in a run can be measured by the time they took to run the race, or by their placing in the race (first, second third, etc), or by the name of the team they represent. 
+- For example, participants in a footrace can be measured by the time they took to run the race, or by their placing in the race (first, second third, etc), or by the name of the team they represent. 
 - These three measurements represent metric, ordinal, and nominal scales, respectively
+
+
+- siit edasi lineaarne regressioon ja tavalisemad testid, lähtuvalt skaalast
+- katse planeerimine ja statistiline jõud
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
@@ -371,12 +389,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

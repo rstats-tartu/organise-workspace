@@ -13,7 +13,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = 'center', dev = 'svg')
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = 'center', dev = 'svg', out.height = 6)
 library(tidyverse)
 ggplot2::theme_set(theme_gray(base_size = 18))
 ```
@@ -164,6 +164,7 @@ ggplot(data = iq) +
 - Simplest way to fix this situation when there are only positive values in your dataset is to **log transform** your data
 
 ```{r, fig.height=3}
+set.seed(123)
 d <- data_frame(`log-normal` = rlnorm(1000)) %>% 
   mutate(`log-transformed` = log(`log-normal`)) %>% 
   gather()
@@ -217,13 +218,17 @@ ggplot(data = original) +
 
 ---
 
-
+## Example calculation of multiplicative SD bounds
 
 ```{r, echo=TRUE}
 # calculate mean and sd using log-trans data
+# library(tidyverse)
+set.seed(123)
+d <- data_frame(`log-normal` = rlnorm(1000)) %>%
+  mutate(`log-transformed` = log(`log-normal`)) %>%
+  gather()
 dsum <- filter(d, key == "log-transformed") %>% 
   summarise_at(vars(value), funs(mean, sd))
-
 # convert calculated mean and sd back to original scale using exp
 (bounds <- transmute_at(dsum, vars(mean, sd), exp) %>% 
   transmute(lower_1sd = mean / sd, upper_1sd = mean * sd,
@@ -231,6 +236,8 @@ dsum <- filter(d, key == "log-transformed") %>%
 ```
 
 ---
+
+## Multiplicative SD placed over distribution
 
 ```{r, fig.height=5}
 ggplot(data = original) +
@@ -243,6 +250,7 @@ ggplot(data = original) +
 
 ---
 
+## Fraction of values within multiplicative SD bounds 
 
 ```{r, echo=TRUE}
 # test calculated sd boundaries on the original data
@@ -305,9 +313,8 @@ o <- qqPlot(sw$BMI, ylab = "Starwars character BMI")
 ###  Normality tests are of virtually no value to the data analyst
 
 - In case of Jabba the Hutt, even log-transformnation does not help to restore intergalactic BMI distribution close to normal. 
-- However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMi is still normally distributed, it has just different parameters from many other species (mean BMI is 440-something)
+- However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMI is still normally distributed with just very different parameters from many other species (e.g. mean BMI is 440-something)
 - We can still go on with this data and model, for example, the relationship between BMI and species or eye-color
-
 
 ```{r, fig.height=3.5}
 o <- qqPlot(log10(sw$BMI), ylab = "Starwars character BMI, Log10")
@@ -318,11 +325,11 @@ o <- qqPlot(log10(sw$BMI), ylab = "Starwars character BMI, Log10")
 
 ## Summary of descriptive statistics
 
-- Descriptive statistics is usually the first sanity check of your data
+- Descriptive statistics provides the first sanity check of your data
 
 - Just by calculating simple arithmetic mean and standard deviation and looking at the distribution of your data (histogram and Q-Q plot) you can learn about your variables
 
-- However, before you go on with exploring and modeling, it's important to understand **what types of variables** to you have in your dataset at hand and **which variables are dependent and which ones are independent**
+- However, before you go on with exploring and modeling of data, it's important to understand **what types of variables** to you have in your dataset at hand and **which variables are dependent and which ones are independent**
 
 ---
 
@@ -348,6 +355,17 @@ class: inverse, center, middle
 - Or, suppose we want to predict average score of an elementary school student based on PISA test result and family income, in this case average score is dependent variable and PISA test result and family income are independent variables. 
 
 - Or, suppose we want to predict blood pressure of patients who either take drug A, or take drug B, or take a placebo, or merely wait. In this case blood pressure is the predicted variable and treatment category is the predictor
+
+---
+
+```{r}
+ggplot(data = sw, mapping = aes(x = height, y = log(mass))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "weight ~ height", 
+       x = "Predictor (height)", 
+       y = "Predicted (weight), Log")
+```
 
 
 ---
@@ -384,9 +402,14 @@ knitr::include_graphics("https://imgs.xkcd.com/comics/correlation.png")
 
 - Whenever we are choosing a model for data, we must answer the question, what kind of scale are we dealing with? 
 
-metric | ordinal | nominal
--------|---------|--------
-response time, temperature, height, weight, counts | placing in a race, ratings | political party affiliation, face of a rolled dice/coin
+```{r}
+scale <- read_delim("metric | ordinal | nominal
+response time, temperature, height, weight, counts | placing in a race, ratings | political party affiliation, face of a rolled dice/coin", delim = "|")
+knitr::kable(scale)
+```
+
+
+
 
 - When two items have different nominal values, all we know is that the two items are different  
 - If the two items have different ordinal values, we know that the two items are different and we know which one is "larger" than the other one, but not how much 
@@ -394,7 +417,7 @@ response time, temperature, height, weight, counts | placing in a race, ratings 
 
 ???
 
-- For example, participants in a run can be measured by the time they took to run the race, or by their placing in the race (first, second third, etc), or by the name of the team they represent. 
+- For example, participants in a footrace can be measured by the time they took to run the race, or by their placing in the race (first, second third, etc), or by the name of the team they represent. 
 - These three measurements represent metric, ordinal, and nominal scales, respectively
 
 
