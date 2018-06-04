@@ -301,8 +301,18 @@ pwr.t.test(d = 0.5, power = 0.80, sig.level = 0.05)
 Find power for a two-sample t-test with 28 in one group and 35 in the other group and a medium effect size. (sig.level defaults to 0.05.)
 
 ```{r, echo=TRUE}
-pwr.t2n.test(n1 = 28, n2 = 35, d = 0.5)
+(p.out <- pwr.t2n.test(n1 = 28, n2 = 35, d = 0.5))
 ```
+
+---
+
+### Plotting out pwr function object
+
+Plotting pwr function output visualises the relationship between sample size and power
+```{r}
+plot(p.out)
+```
+
 
 
 ---

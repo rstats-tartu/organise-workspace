@@ -139,7 +139,7 @@ Let's have an example where we expect to have mean effect size 0.1 with huge sta
 
 Theoretical distribution of the  alternative hypothesis shows considerable overlap with null distribution: 46% of values are smaller than 0. Can we detect such a small effect?
 
-&lt;img src="power_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="power_files/figure-html/unnamed-chunk-3-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -269,7 +269,7 @@ pow &lt;- power(expected_effect, mu = 6, var = 16, n = 14)
 plot(expected_effect, pow, type = "l", ylim = c(0, 1), main = "My Power Plot with fixed sample size\nand effect size between 1 and 12")
 ```
 
-&lt;img src="power_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="power_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -407,7 +407,7 @@ Find power for a two-sample t-test with 28 in one group and 35 in the other grou
 
 
 ```r
-pwr.t2n.test(n1 = 28, n2 = 35, d = 0.5)
+(p.out &lt;- pwr.t2n.test(n1 = 28, n2 = 35, d = 0.5))
 ```
 
 ```
@@ -421,6 +421,14 @@ pwr.t2n.test(n1 = 28, n2 = 35, d = 0.5)
 ##           power = 0.4924588
 ##     alternative = two.sided
 ```
+
+---
+
+### Plotting out pwr function object
+
+Plotting pwr function output visualises the relationship between sample size and power
+&lt;img src="power_files/figure-html/unnamed-chunk-15-1.svg" style="display: block; margin: auto;" /&gt;
+
 
 
 ---
