@@ -250,8 +250,8 @@ dsum <- filter(d, key == "log-transformed") %>%
 ```{r, fig.height=5}
 ggplot(data = original) +
   geom_density(mapping = aes(x = value)) +
-  geom_vline(data = gather(select(bounds, ends_with("1sd"))), mapping = aes(xintercept = value), linetype = "longdash") +
-  geom_vline(data = gather(select(bounds, ends_with("2sd"))), mapping = aes(xintercept = value), linetype = "dotted") +
+  geom_vline(data = gather(dplyr::select(bounds, ends_with("1sd"))), mapping = aes(xintercept = value), linetype = "longdash") +
+  geom_vline(data = gather(dplyr::select(bounds, ends_with("2sd"))), mapping = aes(xintercept = value), linetype = "dotted") +
   labs(caption = "Dashed lines: 1*SD\ndotted lines: 2*SD")
 ```
 
@@ -604,7 +604,126 @@ knitr::include_graphics("img/IMG_20180604_213436.jpg")
 ```
 
 
+---
+
+### Linear model function in R
+Fit a linear model and name the model object as m
+
+```{r, echo=TRUE}
+m <- lm(Sepal.Length ~ Petal.Length, data = iris)
+summary(m)
+```
 
 
+---
 
+## Plotting model fitting results
+
+- Let's make a scatter plot, colored by the var called "Species"
+- Draw the fitted regression line from m. `augment()` function from **broom** package adds fitted values to original data frame
+
+```{r, echo=TRUE, fig.height=2.5}
+library(broom)
+augment(m, iris) %>% 
+  ggplot(aes(Petal.Length, Sepal.Length, color = Species)) +
+  geom_point() +
+  geom_line(aes(y = .fitted), color = 1) +
+  labs(title = "Sepal.Length ~ Petal.Length")
+```
+
+---
+
+## Predicting from linear model
+
+```{r, echo=TRUE}
+## Genereerime uued andmed Petal.Length vahemikus
+Petal_length <- seq(min(iris$Petal.Length), 
+                    max(iris$Petal.Length), 
+                    length.out = 10)
+## Võtame mudeli koefitsendid
+(b0 <- coef(m)[1])
+(b1 <- coef(m)[2])
+## Kasutades mudeli koefitsente genereerime Sepal_length väärtused
+Sepal_length <-  b0 + b1 * Petal_length
+```
+
+---
+
+```{r, echo=TRUE, fig.height=4}
+# plot of predicted values
+data_frame(Sepal_length, Petal_length) %>% 
+  ggplot(aes(x = Petal_length, y = Sepal_length)) + 
+  geom_point(size = 1)
+```
+
+
+---
+
+## Fitting more complex models: dose-response
+
+- Dose-response analysis can be carried out using multi-purpose commercial statistical software (e.g. Graphpad, Excel)
+- In R, dose-response data can be fitted with **drc**
+
+```{r, fig.height=4}
+knitr::include_graphics("img/journal.pone.0146021.t001.PNG")
+```
+
+---
+
+## Log-logistic model
+
+$$f(x) = c + \frac{d-c}{1+\exp(b(\log(x)-\log(e)))}$$
+
+- logistic model coeficients:
+    - b is the steepness of the dose-response curve
+    - c, d the lower and upper asymptotes/limits of the response
+    - e the effective dose ED50
+
+
+???
+
+- there can be also coeficient f to fit assymmetric slope
+
+---
+
+### Fitting drm model
+
+LL.3 is same as LL.4, but lower limit is set to constant c = 0
+
+```{r,echo=TRUE}
+library(drc)
+ryegrass.LL.4 <- drm(rootl ~ conc, data = ryegrass, fct = LL.3())
+summary(ryegrass.LL.4)
+```
+
+---
+
+### Plotting drm model
+
+```{r, echo=TRUE, fig.width=5, fig.asp=1}
+ plot(ryegrass.LL.4, broken = TRUE, type = "all",
+     xlab = "Ferulic acid (mM)", xlim = c(0, 100),
+     ylab = "Root length (cm)")
+```
+
+---
+
+### Estimating effective doses
+
+ED5, ED10, and ED50 can be estimated using ED()`
+```{r, echo=TRUE}
+ED(ryegrass.LL.4, c(5, 10, 50), interval = "delta")
+```
+
+---
+
+## Summary
+
+Good model is 
+
+- As simple as possible, always prefer model with less coefficients
+
+- Generates/predicts plausible values
+
+- Predicts well using new and unseen data
 

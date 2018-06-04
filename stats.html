@@ -79,7 +79,7 @@ class: inverse, center, middle
 
 - Covariance of variables (correlation coeficient)
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
 
 Which of these summary statistics represents best your intuition about central tendency of this distribution?
 
@@ -128,7 +128,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 - When your IQ is 115 (mean IQ of students admitting university is 1 SD away from population mean), then the probability that random person you encounter on the street has higher IQ than you is 16% ((100% - 68%) / 2 = 16%)
 
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
 
 - This can be also calculated with `pnorm(115, 100, 15, lower.tail = FALSE)`
 
@@ -140,7 +140,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 - Simplest way to fix this situation when there are only positive values in your dataset is to **log transform** your data
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -159,7 +159,7 @@ Let's have a look at the summary stats of some variables of Starwars movie chara
 
 ## SD calculated using original log-normal data is way off
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -211,7 +211,7 @@ dsum &lt;- filter(d, key == "log-transformed") %&gt;%
 
 ## Multiplicative SD placed over distribution
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -273,7 +273,7 @@ Q-Q plot allows visual evaluation of your variable against theoretical quantiles
 
 Let's compare the body mass index (BMI) of Starwars characters to normal distribution
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
 
 .footnote[Seems like Jabba Desilijic Tiure is way off the line (15). You can make [Q-Q plot also in MS Excel](https://youtu.be/nX6-j6lY9qc). How to [interpret a Q-Q plot](https://stats.stackexchange.com/questions/101274/how-to-interpret-a-qq-plot)]
 
@@ -285,7 +285,7 @@ Let's compare the body mass index (BMI) of Starwars characters to normal distrib
 - However, we might expect that among Hutts in Nal Hutta (Jabbas' homeworld) BMI is still normally distributed with just very different parameters from many other species (e.g. mean BMI is 440-something)
 - We can still go on with this data and model, for example, the relationship between BMI and species or eye-color
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-11-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -325,7 +325,7 @@ class: inverse, center, middle
 
 ---
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-13-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -498,7 +498,7 @@ fisher.test(prednisone)
 - Here y is predicted and x predictor variable 
 - This model has no coefficients
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-16-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-17-1.svg" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -512,7 +512,7 @@ fisher.test(prednisone)
 - What happens when we add a constant **a** = 20 to x y = a + x
 - Constant **a** determines the value of y, when x = 0, and is model coefficent - **intercept**
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-17-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -521,13 +521,13 @@ fisher.test(prednisone)
 - What happens when we don't add but multiply x with constant: y = b * x
 - Now changes the slope of the line, when x increases one unit then y increases 3 units
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-19-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Simple linear model with two coefficents
 
-&lt;img src="stats_files/figure-html/unnamed-chunk-19-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="stats_files/figure-html/unnamed-chunk-20-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -550,6 +550,206 @@ fisher.test(prednisone)
 - In case of nominal predictors, each value of nominal predictor generates particular deflection of y away from its baseline level
 
 &lt;img src="img/IMG_20180604_213436.jpg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Linear model function in R
+Fit a linear model and name the model object as m
+
+
+```r
+m &lt;- lm(Sepal.Length ~ Petal.Length, data = iris)
+summary(m)
+```
+
+```
+## 
+## Call:
+## lm(formula = Sepal.Length ~ Petal.Length, data = iris)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.24675 -0.29657 -0.01515  0.27676  1.00269 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   4.30660    0.07839   54.94   &lt;2e-16 ***
+## Petal.Length  0.40892    0.01889   21.65   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.4071 on 148 degrees of freedom
+## Multiple R-squared:   0.76,	Adjusted R-squared:  0.7583 
+## F-statistic: 468.6 on 1 and 148 DF,  p-value: &lt; 2.2e-16
+```
+
+
+---
+
+## Plotting model fitting results
+
+- Let's make a scatter plot, colored by the var called "Species"
+- Draw the fitted regression line from m. `augment()` function from **broom** package adds fitted values to original data frame
+
+
+```r
+library(broom)
+augment(m, iris) %&gt;% 
+  ggplot(aes(Petal.Length, Sepal.Length, color = Species)) +
+  geom_point() +
+  geom_line(aes(y = .fitted), color = 1) +
+  labs(title = "Sepal.Length ~ Petal.Length")
+```
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-23-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Predicting from linear model
+
+
+```r
+## Genereerime uued andmed Petal.Length vahemikus
+Petal_length &lt;- seq(min(iris$Petal.Length), 
+                    max(iris$Petal.Length), 
+                    length.out = 10)
+## Võtame mudeli koefitsendid
+(b0 &lt;- coef(m)[1])
+```
+
+```
+## (Intercept) 
+##    4.306603
+```
+
+```r
+(b1 &lt;- coef(m)[2])
+```
+
+```
+## Petal.Length 
+##    0.4089223
+```
+
+```r
+## Kasutades mudeli koefitsente genereerime Sepal_length väärtused
+Sepal_length &lt;-  b0 + b1 * Petal_length
+```
+
+---
+
+
+```r
+# plot of predicted values
+data_frame(Sepal_length, Petal_length) %&gt;% 
+  ggplot(aes(x = Petal_length, y = Sepal_length)) + 
+  geom_point(size = 1)
+```
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-25-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Fitting more complex models: dose-response
+
+- Dose-response analysis can be carried out using multi-purpose commercial statistical software (e.g. Graphpad, Excel)
+- In R, dose-response data can be fitted with **drc**
+
+&lt;img src="img/journal.pone.0146021.t001.PNG" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Log-logistic model
+
+`$$f(x) = c + \frac{d-c}{1+\exp(b(\log(x)-\log(e)))}$$`
+
+- logistic model coeficients:
+    - b is the steepness of the dose-response curve
+    - c, d the lower and upper asymptotes/limits of the response
+    - e the effective dose ED50
+
+
+???
+
+- there can be also coeficient f to fit assymmetric slope
+
+---
+
+### Fitting drm model
+
+LL.3 is same as LL.4, but lower limit is set to constant c = 0
+
+
+```r
+library(drc)
+ryegrass.LL.4 &lt;- drm(rootl ~ conc, data = ryegrass, fct = LL.3())
+summary(ryegrass.LL.4)
+```
+
+```
+## 
+## Model fitted: Log-logistic (ED50 as parameter) with lower limit at 0 (3 parms)
+## 
+## Parameter estimates:
+## 
+##               Estimate Std. Error t-value   p-value    
+## b:(Intercept)  2.47033    0.34168  7.2299 4.011e-07 ***
+## d:(Intercept)  7.85543    0.20438 38.4352 &lt; 2.2e-16 ***
+## e:(Intercept)  3.26336    0.19641 16.6154 1.474e-13 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error:
+## 
+##  0.5615802 (21 degrees of freedom)
+```
+
+---
+
+### Plotting drm model
+
+
+```r
+ plot(ryegrass.LL.4, broken = TRUE, type = "all",
+     xlab = "Ferulic acid (mM)", xlim = c(0, 100),
+     ylab = "Root length (cm)")
+```
+
+&lt;img src="stats_files/figure-html/unnamed-chunk-28-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Estimating effective doses
+
+ED5, ED10, and ED50 can be estimated using ED()`
+
+```r
+ED(ryegrass.LL.4, c(5, 10, 50), interval = "delta")
+```
+
+```
+## 
+## Estimated effective doses
+## 
+##        Estimate Std. Error   Lower   Upper
+## e:1:5   0.99088    0.17808 0.62053 1.36122
+## e:1:10  1.34086    0.18904 0.94773 1.73398
+## e:1:50  3.26336    0.19641 2.85491 3.67181
+```
+
+---
+
+## Summary
+
+Good model is 
+
+- As simple as possible, always prefer model with less coefficients
+
+- Generates/predicts plausible values
+
+- Predicts well using new and unseen data
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
