@@ -316,9 +316,3 @@ knitr::include_graphics("img/spreadsheets-fig10.png")
 ## References
 
 - Broman KW, Woo KH. (2017) Data organization in spreadsheets. PeerJ Preprints 5:e3183v1 https://doi.org/10.7287/peerj.preprints.3183v1
-
-
-
-
-
-
