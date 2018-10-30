@@ -1,14 +1,26 @@
----
-title: "Choosing your data analysis workspace"
-subtitle: "Worksheets versus csv"
-author: "Taavi Päll"
-date: "2018-10-31"
-output: xaringan::moon_reader
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Choosing your data analysis workspace</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Taavi Päll" />
+    <meta name="date" content="2018-10-31" />
+    <link href="index_files/remark-css/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Choosing your data analysis workspace
+## Worksheets versus csv
+### Taavi Päll
+### 2018-10-31
+
 ---
 
-```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
-```
+
+
 
 class: inverse, center, middle
 
@@ -114,9 +126,7 @@ Observation_01 | first_observation | 1st Obs.
 
 ---
 
-```{r, echo=FALSE, fig.align='center', out.width='50%'}
-knitr::include_graphics("http://www.phdcomics.com/comics/archive/phd101212s.gif")
-```
+&lt;img src="http://www.phdcomics.com/comics/archive/phd101212s.gif" width="50%" style="display: block; margin: auto;" /&gt;
 
 Never include "final" in a file name. You will invariably end up with "final ver2"!
 
@@ -126,17 +136,13 @@ Never include "final" in a file name. You will invariably end up with "final ver
 
 - Use consistenly global ISO 8601 standard: YYYY-MM-DD, such as 2018-06-05.
 
-```{r, echo=FALSE, fig.align='center', out.width='50%'}
-knitr::include_graphics("https://imgs.xkcd.com/comics/iso_8601_2x.png")
-```
+&lt;img src="https://imgs.xkcd.com/comics/iso_8601_2x.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ### Example spreadsheet with inconsistent date formats
 
-```{r, echo=FALSE, fig.align='center', out.width='80%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig1.png")
-```
+&lt;img src="img/spreadsheets-fig1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 .footnote[Figure: PeerJ Preprints | https://doi.org/10.7287/peerj.preprints.3183v1 | CC BY 4.0 Open Access | rec: 24 Aug 2017, publ: 24 Aug 2017]
 
@@ -163,9 +169,7 @@ knitr::include_graphics("img/spreadsheets-fig1.png")
 
 - Pathological cases of tables with missing values:
 
-```{r, echo=FALSE, fig.align='center', out.width='100%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig2.png")
-```
+&lt;img src="img/spreadsheets-fig2.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ???
 
@@ -181,9 +185,7 @@ knitr::include_graphics("img/spreadsheets-fig2.png")
 
 Tidy data has variables in columns and observations in rows
 
-```{r, echo=FALSE, fig.align='center', out.width='80%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig3.png")
-```
+&lt;img src="img/spreadsheets-fig3.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -212,25 +214,19 @@ knitr::include_graphics("img/spreadsheets-fig3.png")
 
 ## Examples of non-rectangular tables
 
-```{r, echo=FALSE, fig.align='center', out.width='80%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig5.png")
-```
+&lt;img src="img/spreadsheets-fig5.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Examples of non-rectangular tables
 
-```{r, echo=FALSE, fig.align='center', out.width='80%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig5-selection.png")
-```
+&lt;img src="img/spreadsheets-fig5-selection.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 ## Fixing non-rectangular table
 
-```{r, echo=FALSE, fig.align='center', out.width='80%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig6.png")
-```
+&lt;img src="img/spreadsheets-fig6.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -241,17 +237,13 @@ knitr::include_graphics("img/spreadsheets-fig6.png")
 .pull-left[
 - Problematic table with double headers
 
-```{r, echo=FALSE, fig.align='center', out.width='99%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig7.png")
-```
+&lt;img src="img/spreadsheets-fig7.png" width="99%" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
 - Fixed version
 
-```{r, echo=FALSE, fig.align='center', out.width='99%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig8.png")
-```
+&lt;img src="img/spreadsheets-fig8.png" width="99%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -287,9 +279,7 @@ knitr::include_graphics("img/spreadsheets-fig8.png")
 
 - Instead, add another column with an indicator variable (for example, column "trusted", with values TRUE or FALSE)    
 
-```{r, echo=FALSE, fig.align='center', out.width='99%', fig.cap=''}
-knitr::include_graphics("img/spreadsheets-fig10.png")
-```
+&lt;img src="img/spreadsheets-fig10.png" width="99%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -316,9 +306,47 @@ knitr::include_graphics("img/spreadsheets-fig10.png")
 ## References
 
 - Broman KW, Woo KH. (2017) Data organization in spreadsheets. PeerJ Preprints 5:e3183v1 https://doi.org/10.7287/peerj.preprints.3183v1
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
 
-
-
-
-
-
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
